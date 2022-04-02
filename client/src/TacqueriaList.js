@@ -13,19 +13,6 @@ export default function TacqueriaList() {
             .catch(_ => console.log('Error getting tacquerias.'))
     }, []);
 
-    function onUpvote(e, id) {
-        e.preventDefault();
-        axios
-            .post(`http://localhost:5000/upvote/${id.toString()}`)
-            .then((response) => {
-                const index = tacquerias.findIndex((tacqueria) => tacqueria._id == response.data._id);
-                console.log('------');
-                console.log(tacquerias[index].upvotes);
-                tacquerias[index].upvotes += 1;
-                console.log(tacquerias[index].upvotes);
-            })
-    }
-
     function tacqueriaList() {
         return tacquerias.map((tacqueria) => {
             return (
@@ -33,8 +20,7 @@ export default function TacqueriaList() {
                     key={tacqueria._id}
                     id={tacqueria._id}
                     name={tacqueria.name}
-                    upvotes={tacqueria.upvotes}
-                    onUpvote={onUpvote}
+                    totalUpvotes={tacqueria.upvotes}
                 />
             );
         });
@@ -47,11 +33,21 @@ export default function TacqueriaList() {
     );
 };
 
-function TacqueriaCard(props) {
+function TacqueriaCard({ id, name, totalUpvotes }) {
+    const [upvotes, setUpvotes] = useState(totalUpvotes);
+
+    function onUpvote(e) {
+        e.preventDefault();
+        setUpvotes((upvotes) => upvotes + 1);
+        axios
+            .post(`http://localhost:5000/upvote/${id.toString()}`)
+            .catch((err) => console.log(err));
+    }
+
     return (
         <p>
-            {props.name} with {props.upvotes} upvotes
-            <button onClick={(e) => props.onUpvote(e, props.id)}>+1</button>
+            {name} with {upvotes} upvotes
+            <button onClick={(e) => onUpvote(e)}>+1</button>
         </p>
     )
 };
