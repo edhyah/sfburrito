@@ -3,9 +3,12 @@ import axios from 'axios';
 
 export default function TacqueriaList() {
     const [tacquerias, setTacquerias] = useState([]);
-    const [chosenTacqueriaId, setChosenTacqueriaId] = useState('');
+    const [chosenTacqueriaId, setChosenTacqueriaId] = useState(null);
+    const [previouslyChosenTacqueraId, setPreviouslyChosenTacqueriaId] = useState(null);
 
     useEffect(() => {
+        setPreviouslyChosenTacqueriaId(localStorage.getItem('chosenTacqueriaId'));
+        setChosenTacqueriaId(localStorage.getItem('chosenTacqueriaId'));
         axios
             .get('http://localhost:5000/tacquerias')
             .then(res => {
@@ -16,7 +19,10 @@ export default function TacqueriaList() {
 
     function onUpvote(e, id) {
         e.preventDefault();
-        if (chosenTacqueriaId !== '') {
+        if (id === chosenTacqueriaId) {
+            return;
+        }
+        if (chosenTacqueriaId !== null) {
             axios
                 .post(`http://localhost:5000/downvote/${chosenTacqueriaId.toString()}`)
                 .catch((err) => console.log(err));
@@ -25,6 +31,7 @@ export default function TacqueriaList() {
             .post(`http://localhost:5000/upvote/${id.toString()}`)
             .catch((err) => console.log(err));
         setChosenTacqueriaId(id);
+        localStorage.setItem('chosenTacqueriaId', id);
     }
 
     function tacqueriaList() {
@@ -34,8 +41,9 @@ export default function TacqueriaList() {
                     key={tacqueria._id}
                     id={tacqueria._id}
                     name={tacqueria.name}
-                    totalUpvotes={tacqueria.upvotes}
+                    origNumUpvotes={tacqueria.upvotes}
                     chosen={chosenTacqueriaId === tacqueria._id}
+                    previouslyChosen={previouslyChosenTacqueraId === tacqueria._id}
                     onUpvote={onUpvote}
                 />
             );
@@ -49,14 +57,22 @@ export default function TacqueriaList() {
     );
 };
 
-function TacqueriaCard({ id, name, totalUpvotes, chosen, onUpvote }) {
-    const [upvotes, setUpvotes] = useState(totalUpvotes);
+function TacqueriaCard({ id, name, origNumUpvotes, chosen, previouslyChosen, onUpvote }) {
+    const [upvotes, setUpvotes] = useState(origNumUpvotes);
 
     function getNumberOfUpvotes() {
-        if (chosen && upvotes === totalUpvotes) {
-            setUpvotes(totalUpvotes + 1);
-        } else if (!chosen && upvotes !== totalUpvotes){
-            setUpvotes(totalUpvotes);
+        if (!previouslyChosen) {
+            if (chosen && upvotes === origNumUpvotes) {
+                setUpvotes(origNumUpvotes + 1);
+            } else if (!chosen && upvotes !== origNumUpvotes){
+                setUpvotes(origNumUpvotes);
+            }
+        } else {
+            if (chosen && upvotes !== origNumUpvotes) {
+                setUpvotes(origNumUpvotes);
+            } else if (!chosen && upvotes === origNumUpvotes){
+                setUpvotes(origNumUpvotes - 1);
+            }
         }
         return upvotes;
     }
@@ -65,6 +81,9 @@ function TacqueriaCard({ id, name, totalUpvotes, chosen, onUpvote }) {
         <p>
             {name} with {getNumberOfUpvotes()} upvotes
             <button onClick={(e) => onUpvote(e, id)}>+1</button>
+            {chosen &&
+                'Chosen!'
+            }
         </p>
     )
 };
