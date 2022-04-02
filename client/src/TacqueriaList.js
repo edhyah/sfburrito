@@ -79,7 +79,7 @@ function TacqueriaCard({ id, name, origNumUpvotes, chosen, previouslyChosen, onU
 
     return (
         <div
-            className={`px-5 py-2 my-1 text-center border-2 rounded-lg ${chosen ? 'border-black' : 'border-orange-300'}`}
+            className={`px-5 py-2 my-1 text-center rounded-lg ${chosen ? 'border-2 border-orange-500' : 'border border-stone-400'}`}
             onClick={(e) => onUpvote(e, id)}
         >
             {name} with {getNumberOfUpvotes()} upvotes
