@@ -14,7 +14,18 @@ router.post('/upvote/:id', async (req, res) => {
         const ret = await Tacqueria.findOneAndUpdate(
                 {_id: req.params.id},
                 {$inc: {upvotes: 1}},
-                {new: true}
+            ).exec();
+        res.status(200).json(ret);
+    } catch (err) {
+        console.log(err);
+    }
+});
+
+router.post('/downvote/:id', async (req, res) => {
+    try {
+        const ret = await Tacqueria.findOneAndUpdate(
+                {_id: req.params.id},
+                {$inc: {upvotes: -1}},
             ).exec();
         res.status(200).json(ret);
     } catch (err) {
