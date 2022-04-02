@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import TacqueriaCard from './TacqueriaCard';
 
 export default function TacqueriaList() {
     const [tacquerias, setTacquerias] = useState([]);
@@ -17,7 +16,9 @@ export default function TacqueriaList() {
     function tacqueriaList() {
         return tacquerias.map((tacqueria) => {
             return (
-                <TacqueriaCard name={tacqueria.name} upvotes={tacqueria.upvotes}></TacqueriaCard>
+                <p>
+                    {tacqueria.name} with {tacqueria.upvotes} upvotes
+                </p>
             );
         });
     };

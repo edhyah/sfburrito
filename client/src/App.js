@@ -1,4 +1,4 @@
-import TacqueriaList from './components/TacqueriaList';
+import TacqueriaList from './TacqueriaList';
 
 function App() {
     return (
