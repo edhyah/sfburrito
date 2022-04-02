@@ -1,12 +1,13 @@
+import Header from './Header';
+import Footer from './Footer';
 import TacqueriaList from './TacqueriaList';
 
 function App() {
     return (
-        <div>
-            <h1 className="text-3xl font-bold underline">
-                Who has the best Mission burrito in SF?
-            </h1>
+        <div className="relative flex flex-col h-screen bg-orange-100">
+            <Header />
             <TacqueriaList />
+            <Footer />
         </div>
     );
 };

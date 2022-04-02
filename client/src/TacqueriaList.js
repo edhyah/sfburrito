@@ -51,7 +51,7 @@ export default function TacqueriaList() {
     };
 
     return (
-        <div className="">
+        <div className="w-1/2 mx-auto">
             {tacqueriaList()}
         </div>
     );
@@ -78,12 +78,11 @@ function TacqueriaCard({ id, name, origNumUpvotes, chosen, previouslyChosen, onU
     }
 
     return (
-        <p>
+        <div
+            className={`px-5 py-2 my-1 text-center border-2 rounded-lg ${chosen ? 'border-black' : 'border-orange-300'}`}
+            onClick={(e) => onUpvote(e, id)}
+        >
             {name} with {getNumberOfUpvotes()} upvotes
-            <button onClick={(e) => onUpvote(e, id)}>+1</button>
-            {chosen &&
-                'Chosen!'
-            }
-        </p>
+        </div>
     )
 };
