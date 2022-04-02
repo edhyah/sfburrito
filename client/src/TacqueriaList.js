@@ -16,9 +16,11 @@ export default function TacqueriaList() {
     function tacqueriaList() {
         return tacquerias.map((tacqueria) => {
             return (
-                <p>
-                    {tacqueria.name} with {tacqueria.upvotes} upvotes
-                </p>
+                <TacqueriaCard
+                    key={tacqueria._id}
+                    name={tacqueria.name}
+                    upvotes={tacqueria.upvotes}
+                />
             );
         });
     };
@@ -28,4 +30,12 @@ export default function TacqueriaList() {
             {tacqueriaList()}
         </div>
     );
+};
+
+function TacqueriaCard(props) {
+    return (
+        <p>
+            {props.name} with {props.upvotes} upvotes
+        </p>
+    )
 };
