@@ -4,7 +4,7 @@ import TacqueriaList from './TacqueriaList';
 
 function App() {
     return (
-        <div className="relative flex flex-col h-screen bg-orange-50 font-sourcesanspro">
+        <div className="relative flex flex-col bg-orange-50 font-sourcesanspro">
             <Header />
             <TacqueriaList />
             <Footer />

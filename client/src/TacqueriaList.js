@@ -34,7 +34,16 @@ export default function TacqueriaList() {
         localStorage.setItem('chosenTacqueriaId', id);
     }
 
+    function getTotalNumberOfUpvotes() {
+        let numUpvotes = 0;
+        for (let i = 0; i < tacquerias.length; i++) {
+            numUpvotes += tacquerias[i].upvotes;
+        }
+        return numUpvotes;
+    }
+
     function tacqueriaList() {
+        const totalUpvotes = getTotalNumberOfUpvotes();
         return tacquerias.map((tacqueria) => {
             return (
                 <TacqueriaCard
@@ -42,6 +51,7 @@ export default function TacqueriaList() {
                     id={tacqueria._id}
                     name={tacqueria.name}
                     origNumUpvotes={tacqueria.upvotes}
+                    totalUpvotes={totalUpvotes}
                     chosen={chosenTacqueriaId === tacqueria._id}
                     previouslyChosen={previouslyChosenTacqueraId === tacqueria._id}
                     onUpvote={onUpvote}
@@ -57,21 +67,26 @@ export default function TacqueriaList() {
     );
 };
 
-function TacqueriaCard({ id, name, origNumUpvotes, chosen, previouslyChosen, onUpvote }) {
+function TacqueriaCard({ id, name, origNumUpvotes, totalUpvotes, chosen, previouslyChosen, onUpvote }) {
     const [upvotes, setUpvotes] = useState(origNumUpvotes);
+    const [percentageUpvotes, setPercentageUpvotes] = useState(Math.round(100 * origNumUpvotes / totalUpvotes));
 
     function getNumberOfUpvotes() {
         if (!previouslyChosen) {
             if (chosen && upvotes === origNumUpvotes) {
                 setUpvotes(origNumUpvotes + 1);
+                setPercentageUpvotes(Math.round(100 * (origNumUpvotes + 1) / (totalUpvotes + 1)));
             } else if (!chosen && upvotes !== origNumUpvotes){
                 setUpvotes(origNumUpvotes);
+                setPercentageUpvotes(Math.round(100 * (origNumUpvotes) / (totalUpvotes + 1)));
             }
         } else {
             if (chosen && upvotes !== origNumUpvotes) {
                 setUpvotes(origNumUpvotes);
+                setPercentageUpvotes(Math.round(100 * (origNumUpvotes) / (totalUpvotes)));
             } else if (!chosen && upvotes === origNumUpvotes){
                 setUpvotes(origNumUpvotes - 1);
+                setPercentageUpvotes(Math.round(100 * (origNumUpvotes - 1) / (totalUpvotes)));
             }
         }
         return upvotes;
@@ -79,13 +94,18 @@ function TacqueriaCard({ id, name, origNumUpvotes, chosen, previouslyChosen, onU
 
     return (
         <div
-            className={`px-5 py-2 my-1 text-center rounded-lg w-full border border-stone-400 flex ${chosen ? 'ring-2 ring-orange-500 border-none' : ''}`}
+            className={`px-5 py-2 my-1 text-center rounded-lg w-full border border-stone-400 ${chosen ? 'ring-2 ring-orange-500 border-none' : ''}`}
             onClick={(e) => onUpvote(e, id)}
         >
-            <input type="radio" className="mr-2" checked={chosen} />
-            {name}
-            <div className="flex-auto text-right">
-                {getNumberOfUpvotes()}
+            <div className="flex">
+                <input type="radio" className="mr-2" checked={chosen} readOnly />
+                {name}
+                <div className="flex-auto text-right">
+                    {getNumberOfUpvotes()}
+                </div>
+            </div>
+            <div className="w-full h-1 my-1 bg-stone-200">
+                <div className={`h-1 bg-orange-500 w-[${percentageUpvotes}%]`} />
             </div>
         </div>
     )
