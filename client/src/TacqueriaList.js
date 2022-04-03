@@ -79,10 +79,14 @@ function TacqueriaCard({ id, name, origNumUpvotes, chosen, previouslyChosen, onU
 
     return (
         <div
-            className={`px-5 py-2 my-1 text-center rounded-lg w-full border border-stone-400 ${chosen ? 'ring-2 ring-orange-500 border-none' : ''}`}
+            className={`px-5 py-2 my-1 text-center rounded-lg w-full border border-stone-400 flex ${chosen ? 'ring-2 ring-orange-500 border-none' : ''}`}
             onClick={(e) => onUpvote(e, id)}
         >
-            {name} with {getNumberOfUpvotes()} upvotes
+            <input type="radio" className="mr-2" checked={chosen} />
+            {name}
+            <div className="flex-auto text-right">
+                {getNumberOfUpvotes()}
+            </div>
         </div>
     )
 };
