@@ -14,10 +14,10 @@ function Footer() {
                 Contact me on <a href="https://twitter.com/edwardahn9">Twitter</a>!
             </p>
             <p className="">
-                Give me a like (icon)
+                If you enjoyed this, buy me a burrito! (venmo)
             </p>
             <p className="">
-                Accepting donations on Venmo @edwarda14
+                Give me a like (icon) and tweet
             </p>
         </div>
     );
