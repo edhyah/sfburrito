@@ -61,7 +61,7 @@ export default function TacqueriaList() {
     };
 
     return (
-        <div className="w-1/2 mx-auto">
+        <div className="w-2/5 mx-auto">
             {tacqueriaList()}
         </div>
     );
@@ -94,11 +94,10 @@ function TacqueriaCard({ id, name, origNumUpvotes, totalUpvotes, chosen, previou
 
     return (
         <div
-            className={`px-5 py-2 my-1 text-center rounded-lg w-full border border-stone-400 ${chosen ? 'ring-2 ring-orange-500 border-none' : ''}`}
+            className={`px-5 py-2 my-1 text-center rounded-lg w-full border border-stone-400 cursor-pointer ${chosen ? 'ring-2 ring-orange-500 border-none' : ''}`}
             onClick={(e) => onUpvote(e, id)}
         >
             <div className="flex">
-                <input type="radio" className="mr-2" checked={chosen} readOnly />
                 {name}
                 <div className="flex-auto text-right">
                     {getNumberOfUpvotes()}
