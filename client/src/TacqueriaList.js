@@ -12,10 +12,24 @@ export default function TacqueriaList() {
         axios
             .get('http://localhost:5000/tacquerias')
             .then(res => {
-                setTacquerias(res.data);
+                setTacquerias(res.data.sort(sortFn));
             })
             .catch(_ => console.log('Error getting tacquerias.'));
     }, []);
+
+    function sortFn(a, b) {
+        if (a.upvotes < b.upvotes) {
+            return 1;
+        } else if (a.upvotes > b.upvotes) {
+            return -1;
+        } else {
+            if (a.name > b.name) {
+                return 1;
+            } else {
+                return -1;
+            }
+        }
+    }
 
     function onUpvote(e, id) {
         e.preventDefault();
