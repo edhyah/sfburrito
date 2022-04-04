@@ -56,7 +56,7 @@ export default function LikeButton() {
 
     return (
         <div
-            className="flex bg-[#4267B2] w-fit h-fit px-2 rounded-md cursor-pointer hover:bg-[#35538f]"
+            className="flex bg-[#4267B2] w-fit h-fit px-3 rounded-md cursor-pointer hover:bg-[#35538f]"
             onClick={(e) => onLike(e)}
         >
             <LikeIcon liked={liked} />
