@@ -14,7 +14,7 @@ export default function TacqueriaList() {
             .then(res => {
                 setTacquerias(res.data);
             })
-            .catch(_ => console.log('Error getting tacquerias.'))
+            .catch(_ => console.log('Error getting tacquerias.'));
     }, []);
 
     function onUpvote(e, id) {
@@ -58,14 +58,14 @@ export default function TacqueriaList() {
                 />
             );
         });
-    };
+    }
 
     return (
         <div className="w-2/5 mx-auto">
             {tacqueriaList()}
         </div>
     );
-};
+}
 
 function TacqueriaCard({ id, name, origNumUpvotes, totalUpvotes, chosen, previouslyChosen, onUpvote }) {
     const [upvotes, setUpvotes] = useState(origNumUpvotes);
@@ -107,5 +107,5 @@ function TacqueriaCard({ id, name, origNumUpvotes, totalUpvotes, chosen, previou
                 <div className={`h-1 bg-orange-500 w-[${percentageUpvotes}%]`} />
             </div>
         </div>
-    )
-};
+    );
+}
