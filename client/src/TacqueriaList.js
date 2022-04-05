@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import PercentageBar from './PercentageBar';
 
 export default function TacqueriaList() {
     const [tacquerias, setTacquerias] = useState([]);
@@ -90,7 +91,7 @@ function TacqueriaCard({ id, name, origNumUpvotes, totalUpvotes, chosen, previou
             if (chosen && upvotes === origNumUpvotes) {
                 setUpvotes(origNumUpvotes + 1);
                 setPercentageUpvotes(Math.round(100 * (origNumUpvotes + 1) / (totalUpvotes + 1)));
-            } else if (!chosen && upvotes !== origNumUpvotes){
+            } else if (!chosen && upvotes !== origNumUpvotes) {
                 setUpvotes(origNumUpvotes);
                 setPercentageUpvotes(Math.round(100 * (origNumUpvotes) / (totalUpvotes + 1)));
             }
@@ -117,9 +118,7 @@ function TacqueriaCard({ id, name, origNumUpvotes, totalUpvotes, chosen, previou
                     {getNumberOfUpvotes()}
                 </div>
             </div>
-            <div className="w-full h-1 my-1 bg-stone-200">
-                <div className={`h-1 bg-orange-500 w-[${percentageUpvotes}%]`} />
-            </div>
+            <PercentageBar percent={percentageUpvotes} />
         </div>
     );
 }

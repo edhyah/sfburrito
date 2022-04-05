@@ -18,7 +18,7 @@ export default function LikeButton() {
                 setNumLikes(res.data.numLikes);
             })
             .catch(_ => console.log('Error getting number of likes.'));
-    });
+    }, []);
 
     function onLike(e) {
         e.preventDefault();

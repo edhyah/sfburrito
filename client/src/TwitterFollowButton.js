@@ -1,7 +1,7 @@
 import { Icon } from '@iconify/react';
 
 export default function TwitterFollowButton() {
-    return ( 
+    return (
         <a href="https://twitter.com/edwardahn9">
             <div className="flex bg-[#1da1f2] h-fit px-3 rounded-md cursor-pointer hover:bg-[#117dbf] ml-3">
                 <div className="py-1">
