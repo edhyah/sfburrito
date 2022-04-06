@@ -1,15 +1,15 @@
 export default function PercentageBar({percent}) {
-    let percentStyle = getPercentStyle(percent);
+    let widthClassName = getWidthClassName(percent);
     return (
         <div className="w-full h-1 my-1 bg-stone-200">
-            <div className={`h-1 bg-orange-500 ${percentStyle}`} />
+            <div className={`h-1 bg-orange-500 ${widthClassName}`} />
         </div>
     );
 }
 
 // Since we can't dynamically construct class names in Tailwind, we instead
 // construct them statically in this function.
-function getPercentStyle(percent) {
+function getWidthClassName(percent) {
     switch (percent) {
         case 0:
             return 'w-[0%]';
