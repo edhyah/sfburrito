@@ -84,7 +84,7 @@ export default function TacqueriaList() {
     }
 
     return (
-        <div className="w-2/5 mx-auto">
+        <div className="mx-auto w-300px sm:w-500px">
             {tacqueriaList()}
         </div>
     );
