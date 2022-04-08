@@ -68,7 +68,7 @@ export default function TacqueriaList() {
 
     function tacqueriaList() {
         const totalUpvotes = getTotalNumberOfUpvotes();
-        return tacquerias.sort(sortFn).map((tacqueria) => {
+        return tacquerias.map((tacqueria) => {
             return (
                 <TacqueriaCard
                     key={tacqueria._id}
