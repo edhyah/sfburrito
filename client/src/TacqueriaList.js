@@ -9,7 +9,7 @@ export default function TacqueriaList() {
     useEffect(() => {
         setChosenTacqueriaId(localStorage.getItem('chosenTacqueriaId'));
         axios
-            .get('http://localhost:5000/tacquerias')
+            .get('/tacquerias')
             .then(res => {
                 setTacquerias(res.data.sort(sortFn));
             })
@@ -44,14 +44,14 @@ export default function TacqueriaList() {
         }
         if (chosenTacqueriaId !== null) {
             axios
-                .post(`http://localhost:5000/downvote/${chosenTacqueriaId.toString()}`)
+                .post(`/downvote/${chosenTacqueriaId.toString()}`)
                 .then(_ => {
                     tacquerias[getIndexOfTacqueriaWithId(chosenTacqueriaId)].upvotes -= 1;
                 })
                 .catch((err) => console.log(err));
         }
         axios
-            .post(`http://localhost:5000/upvote/${id.toString()}`)
+            .post(`/upvote/${id.toString()}`)
             .then(_ => {
                 tacquerias[getIndexOfTacqueriaWithId(id)].upvotes += 1;
                 setChosenTacqueriaId(id);
