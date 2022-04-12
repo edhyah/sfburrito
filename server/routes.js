@@ -4,7 +4,7 @@ const router = express.Router();
 const Likes = require('./models/likes');
 const Tacqueria = require('./models/tacqueria');
 
-router.get('/tacquerias', (_, res) => {
+router.get('/api/tacquerias', (_, res) => {
     try {
         Tacqueria.find()
             .then(tacquerias => res.json(tacquerias))
@@ -14,7 +14,7 @@ router.get('/tacquerias', (_, res) => {
     }
 });
 
-router.post('/upvote/:id', async (req, res) => {
+router.post('/api/upvote/:id', async (req, res) => {
     try {
         const ret = await Tacqueria.findOneAndUpdate(
                 {_id: req.params.id},
@@ -26,7 +26,7 @@ router.post('/upvote/:id', async (req, res) => {
     }
 });
 
-router.post('/downvote/:id', async (req, res) => {
+router.post('/api/downvote/:id', async (req, res) => {
     try {
         const ret = await Tacqueria.findOneAndUpdate(
                 {_id: req.params.id},
@@ -38,7 +38,7 @@ router.post('/downvote/:id', async (req, res) => {
     }
 });
 
-router.get('/like', (_, res) => {
+router.get('/api/like', (_, res) => {
     try {
         Likes.find()
             .then(likes => res.json(likes[0]))
@@ -48,7 +48,7 @@ router.get('/like', (_, res) => {
     }
 });
 
-router.post('/like', async (_, res) => {
+router.post('/api/like', async (_, res) => {
     try {
         const ret = await Likes.findOneAndUpdate(
                 {_id: '624a9cbb9f0d796cbefc16cd'},

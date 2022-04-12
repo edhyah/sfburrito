@@ -13,7 +13,7 @@ export default function LikeButton() {
             setLiked(true);
         }
         axios
-            .get('/like')
+            .get('/api/like')
             .then(res => {
                 setNumLikes(res.data.numLikes);
             })
@@ -24,7 +24,7 @@ export default function LikeButton() {
         e.preventDefault();
         if (liked) return;
         axios
-            .post('/like')
+            .post('/api/like')
             .catch((err) => console.log(err));
         setNumLikes(numLikes + 1);
         setLiked(true);
