@@ -1,6 +1,6 @@
 export default function Header() {
     return (
-        <div className="pb-5 mt-20 text-center">
+        <div className="pb-5 mt-10 text-center">
             <h1 className="text-3xl font-bold">
                 Who has the best Mission burrito in SF?
             </h1>
