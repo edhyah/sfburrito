@@ -17,6 +17,19 @@ to build more similar (simple) webapps in the future.
 The implementation is just a classic MERN stack (MongoDB, Express, React, Node)
 with TailwindCSS as my front-end framework.
 
+## Deployment
+
+I followed
+[this](https://betterprogramming.pub/deploy-mern-stack-app-on-aws-ec2-with-letsencrypt-ssl-8f463c01502a)
+post to deploy my MERN stack online. I also did the following:
+* In `default.conf`, inside the `server` block, I added:
+```
+location /api/ {
+    proxy_pass http://localhost:5000/api/;
+}
+```
+* I whitelisted the IP address of the server in MongoDB Atlas.
+
 ## Contact
 
 Email me at <edward@edwardahn.me>!
