@@ -4,7 +4,7 @@ import VenmoButton from './VenmoButton';
 
 export default function Footer() {
     return (
-        <div className="flex flex-wrap justify-center pt-8 mx-auto mb-8 text-center">
+        <div className="flex flex-wrap justify-center pt-8 mx-auto mb-20 text-center">
             <LikeButton />
             <TwitterFollowButton />
             <VenmoButton />
