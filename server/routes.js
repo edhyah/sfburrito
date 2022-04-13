@@ -2,13 +2,13 @@ const express = require('express');
 const router = express.Router();
 
 const Likes = require('./models/likes');
-const Tacqueria = require('./models/tacqueria');
+const Taqueria = require('./models/taqueria');
 
-router.get('/api/tacquerias', (_, res) => {
+router.get('/api/taquerias', (_, res) => {
     try {
-        Tacqueria.find()
-            .then(tacquerias => res.json(tacquerias))
-            .catch(_ => res.status(404).json({ notacqueriasfound: 'No tacquerias found!' }));
+        Taqueria.find()
+            .then(taquerias => res.json(taquerias))
+            .catch(_ => res.status(404).json({ notaqueriasfound: 'No taquerias found!' }));
     } catch (err) {
         console.log(err);
     }
@@ -16,7 +16,7 @@ router.get('/api/tacquerias', (_, res) => {
 
 router.post('/api/upvote/:id', async (req, res) => {
     try {
-        const ret = await Tacqueria.findOneAndUpdate(
+        const ret = await Taqueria.findOneAndUpdate(
                 {_id: req.params.id},
                 {$inc: {upvotes: 1}},
             ).exec();
@@ -28,7 +28,7 @@ router.post('/api/upvote/:id', async (req, res) => {
 
 router.post('/api/downvote/:id', async (req, res) => {
     try {
-        const ret = await Tacqueria.findOneAndUpdate(
+        const ret = await Taqueria.findOneAndUpdate(
                 {_id: req.params.id},
                 {$inc: {upvotes: -1}},
             ).exec();

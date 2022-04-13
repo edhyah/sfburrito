@@ -2,18 +2,18 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import PercentageBar from './PercentageBar';
 
-export default function TacqueriaList() {
-    const [tacquerias, setTacquerias] = useState([]);
-    const [chosenTacqueriaId, setChosenTacqueriaId] = useState(null);
+export default function TaqueriaList() {
+    const [taquerias, setTaquerias] = useState([]);
+    const [chosenTaqueriaId, setChosenTaqueriaId] = useState(null);
 
     useEffect(() => {
-        setChosenTacqueriaId(localStorage.getItem('chosenTacqueriaId'));
+        setChosenTaqueriaId(localStorage.getItem('chosenTacqueriaId'));
         axios
-            .get('/api/tacquerias')
+            .get('/api/taquerias')
             .then(res => {
-                setTacquerias(res.data.sort(sortFn));
+                setTaquerias(res.data.sort(sortFn));
             })
-            .catch(_ => console.log('Error getting tacquerias.'));
+            .catch(_ => console.log('Error getting taquerias.'));
     }, []);
 
     function sortFn(a, b) {
@@ -30,53 +30,53 @@ export default function TacqueriaList() {
         }
     }
 
-    function getIndexOfTacqueriaWithId(id) {
-        let index = tacquerias.reduce((index, tacqueria, currentIndex) => {
-            return tacqueria._id === id ? currentIndex : index;
+    function getIndexOfTaqueriaWithId(id) {
+        let index = taquerias.reduce((index, taqueria, currentIndex) => {
+            return taqueria._id === id ? currentIndex : index;
         }, -1);
         return index;
     }
 
     function onUpvote(e, id) {
         e.preventDefault();
-        if (id === chosenTacqueriaId) {
+        if (id === chosenTaqueriaId) {
             return;
         }
-        if (chosenTacqueriaId !== null) {
+        if (chosenTaqueriaId !== null) {
             axios
-                .post(`/api/downvote/${chosenTacqueriaId.toString()}`)
+                .post(`/api/downvote/${chosenTaqueriaId.toString()}`)
                 .then(_ => {
-                    tacquerias[getIndexOfTacqueriaWithId(chosenTacqueriaId)].upvotes -= 1;
+                    taquerias[getIndexOfTaqueriaWithId(chosenTaqueriaId)].upvotes -= 1;
                 })
                 .catch((err) => console.log(err));
         }
         axios
             .post(`/api/upvote/${id.toString()}`)
             .then(_ => {
-                tacquerias[getIndexOfTacqueriaWithId(id)].upvotes += 1;
-                setChosenTacqueriaId(id);
+                taquerias[getIndexOfTaqueriaWithId(id)].upvotes += 1;
+                setChosenTaqueriaId(id);
                 localStorage.setItem('chosenTacqueriaId', id);
             })
             .catch((err) => console.log(err));
     }
 
     function getTotalNumberOfUpvotes() {
-        return tacquerias.reduce((previousSum, tacqueria) => {
-            return previousSum + tacqueria.upvotes;
+        return taquerias.reduce((previousSum, taqueria) => {
+            return previousSum + taqueria.upvotes;
         }, 0);
     }
 
-    function tacqueriaList() {
+    function taqueriaList() {
         const totalUpvotes = getTotalNumberOfUpvotes();
-        return tacquerias.map((tacqueria) => {
+        return taquerias.map((taqueria) => {
             return (
-                <TacqueriaCard
-                    key={tacqueria._id}
-                    id={tacqueria._id}
-                    name={tacqueria.name}
-                    numUpvotes={tacqueria.upvotes}
+                <TaqueriaCard
+                    key={taqueria._id}
+                    id={taqueria._id}
+                    name={taqueria.name}
+                    numUpvotes={taqueria.upvotes}
                     totalUpvotes={totalUpvotes}
-                    chosen={chosenTacqueriaId === tacqueria._id}
+                    chosen={chosenTaqueriaId === taqueria._id}
                     onUpvote={onUpvote}
                 />
             );
@@ -85,12 +85,12 @@ export default function TacqueriaList() {
 
     return (
         <div className="mx-auto w-300px sm:w-500px">
-            {tacqueriaList()}
+            {taqueriaList()}
         </div>
     );
 }
 
-function TacqueriaCard({ id, name, numUpvotes, totalUpvotes, chosen, onUpvote }) {
+function TaqueriaCard({ id, name, numUpvotes, totalUpvotes, chosen, onUpvote }) {
     return (
         <div
             className={`px-5 py-2 my-1 text-center rounded-lg w-full border border-stone-400 cursor-pointer ${chosen ? 'ring-2 ring-orange-500 border-none' : ''}`}

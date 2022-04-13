@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const TacqueriaSchema = new mongoose.Schema({
+const TaqueriaSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true
@@ -11,4 +11,4 @@ const TacqueriaSchema = new mongoose.Schema({
     }
 });
 
-module.exports = Tacqueria = mongoose.model('tacqueria', TacqueriaSchema);
+module.exports = Taqueria = mongoose.model('taqueria', TaqueriaSchema);
