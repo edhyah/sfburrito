@@ -30,6 +30,11 @@ location /api/ {
 ```
 * I whitelisted the IP address of the server in MongoDB Atlas.
 
+If stopping/restarting the AWS instance, don't forget to:
+- Update the IP address in the DNS
+- Run `pm2 update` to restart the service
+- Whitelist the new IP address in MongoDB
+
 ## Contact
 
 Email me at <edward@edwardahn.me>!
