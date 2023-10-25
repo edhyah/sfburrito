@@ -23,7 +23,7 @@ export default function LikeButton() {
             }
         }
         fetchLikes();
-    }, []);
+    }, [supabase]);
 
     function onLike(e) {
         e.preventDefault();

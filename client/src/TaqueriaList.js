@@ -20,7 +20,7 @@ export default function TaqueriaList() {
             }
         }
         fetchTaquerias();
-    }, []);
+    }, [supabase]);
 
     function sortFn(a, b) {
         if (a.upvotes < b.upvotes) {
