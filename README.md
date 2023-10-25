@@ -3,9 +3,9 @@
 Just a simple webapp where people can vote for what they think is the best
 taqueria that serves Mission burritos in San Francisco.
 
-The website used to be accessible at
-[whohasthebestmissionburrito.com](https://whohasthebestmissionburrito.com) but
-I have since taken the server down. A screenshot of the website is shown below.
+This website is accessible at
+[whohasthebestmissionburrito.com](https://whohasthebestmissionburrito.com).
+A screenshot of the website is shown below.
 
 ![Screenshot of whohasthebestmissionburrito.com](screenshot_sm.png)
 
@@ -20,10 +20,15 @@ to build more similar (simple) webapps in the future.
 
 ## Tech stack
 
-The implementation is just a classic MERN stack (MongoDB, Express, React, Node)
-with TailwindCSS as my front-end framework.
+The old implementation is just a classic MERN stack (MongoDB, Express, React,
+Node) with TailwindCSS as my front-end framework. The current implementation is
+just a serverless website deployed on Netlify and Supabase (no server). Code for
+the server is still in this repo, but the front-end doesn't call it anymore.
 
-## Deployment
+## Deployment for MERN
+
+IMPORTANT: This is deprecated, as the server isn't used anymore in favor of a
+serverless implementation. To deploy on MERN, see commit 647c661.
 
 I followed
 [this](https://betterprogramming.pub/deploy-mern-stack-app-on-aws-ec2-with-letsencrypt-ssl-8f463c01502a)
@@ -48,6 +53,14 @@ like:
 ```
 mongodb+srv://<username>:<password>@cluster0.vbaw8.mongodb.net/<database_name>?retryWrites=true&w=majority
 ```
+
+## Serverless deployment
+
+In a nutshell, create a table in a custom schema called private and implement
+SECURITY DEFINER functions in the public schema to access this table. This is to
+practice [schema
+isolation](https://postgrest.org/en/v7.0.0/schema_structure.html#schema-isolation).
+See supabase.md for more information.
 
 ## Contact
 

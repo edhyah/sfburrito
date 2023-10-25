@@ -1,19 +1,25 @@
 import { useEffect, useState } from 'react';
-import axios from 'axios';
 import PercentageBar from './PercentageBar';
+
+import { useSupabase } from './Supabase'
 
 export default function TaqueriaList() {
     const [taquerias, setTaquerias] = useState([]);
     const [chosenTaqueriaId, setChosenTaqueriaId] = useState(null);
+    const supabase = useSupabase();
 
     useEffect(() => {
-        setChosenTaqueriaId(localStorage.getItem('chosenTacqueriaId'));
-        axios
-            .get('/api/taquerias')
-            .then(res => {
-                setTaquerias(res.data.sort(sortFn));
-            })
-            .catch(_ => console.log('Error getting taquerias.'));
+        const _id = localStorage.getItem('chosenTacqueriaId');
+        if (_id) setChosenTaqueriaId(parseInt(_id, 10));
+        async function fetchTaquerias() {
+            const { data, error } = await supabase.rpc('sfburrito_get_taquerias')
+            if (data) {
+                setTaquerias(data.sort(sortFn));
+            } else {
+                console.error("Error fetching taquerias:", error);
+            }
+        }
+        fetchTaquerias();
     }, []);
 
     function sortFn(a, b) {
@@ -32,7 +38,7 @@ export default function TaqueriaList() {
 
     function getIndexOfTaqueriaWithId(id) {
         let index = taquerias.reduce((index, taqueria, currentIndex) => {
-            return taqueria._id === id ? currentIndex : index;
+            return taqueria.id === id ? currentIndex : index;
         }, -1);
         return index;
     }
@@ -42,22 +48,37 @@ export default function TaqueriaList() {
         if (id === chosenTaqueriaId) {
             return;
         }
+
+        // To ensure downvote gets called first before upvote
+        let downvotePromise;
+
         if (chosenTaqueriaId !== null) {
-            axios
-                .post(`/api/downvote/${chosenTaqueriaId.toString()}`)
-                .then(_ => {
+            downvotePromise = supabase
+                .rpc('sfburrito_downvote_taqueria', { taqueria_id: chosenTaqueriaId })
+                .then(({ _, error }) => {
+                    if (error) console.error(error);
                     taquerias[getIndexOfTaqueriaWithId(chosenTaqueriaId)].upvotes -= 1;
                 })
-                .catch((err) => console.log(err));
+                .catch(error => {
+                    console.error("An unexpected error occurred while downvoting:", error);
+                });
+        } else {
+            downvotePromise = Promise.resolve();
         }
-        axios
-            .post(`/api/upvote/${id.toString()}`)
-            .then(_ => {
-                taquerias[getIndexOfTaqueriaWithId(id)].upvotes += 1;
-                setChosenTaqueriaId(id);
-                localStorage.setItem('chosenTacqueriaId', id);
-            })
-            .catch((err) => console.log(err));
+
+        downvotePromise.then(() => {
+            return supabase
+                .rpc('sfburrito_upvote_taqueria', { taqueria_id: id })
+                .then(({ _, error }) => {
+                    if (error) console.error(error);
+                    taquerias[getIndexOfTaqueriaWithId(id)].upvotes += 1;
+                    setChosenTaqueriaId(id);
+                    localStorage.setItem('chosenTacqueriaId', id);
+                })
+                .catch(error => {
+                    console.error("An unexpected error occurred while upvoting:", error);
+                });
+        });
     }
 
     function getTotalNumberOfUpvotes() {
@@ -71,12 +92,12 @@ export default function TaqueriaList() {
         return taquerias.map((taqueria) => {
             return (
                 <TaqueriaCard
-                    key={taqueria._id}
-                    id={taqueria._id}
+                    key={taqueria.id}
+                    id={taqueria.id}
                     name={taqueria.name}
                     numUpvotes={taqueria.upvotes}
                     totalUpvotes={totalUpvotes}
-                    chosen={chosenTaqueriaId === taqueria._id}
+                    chosen={chosenTaqueriaId === taqueria.id}
                     onUpvote={onUpvote}
                 />
             );

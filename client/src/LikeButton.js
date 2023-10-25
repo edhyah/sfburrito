@@ -1,34 +1,44 @@
 import { useEffect, useState } from 'react';
-import axios from 'axios';
 
 import { faCheck, faThumbsUp } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
+import { useSupabase } from './Supabase'
+
 export default function LikeButton() {
     const [numLikes, setNumLikes] = useState(0);
     const [liked, setLiked] = useState(false);
+    const supabase = useSupabase();
 
     useEffect(() => {
         if (localStorage.getItem('liked')) {
             setLiked(true);
         }
-        axios
-            .get('/api/like')
-            .then(res => {
-                setNumLikes(res.data.numLikes);
-            })
-            .catch(_ => console.log('Error getting number of likes.'));
+        async function fetchLikes() {
+            const { data, error } = await supabase.rpc('sfburrito_get_likes');
+            if (data) {
+                setNumLikes(data);
+            } else {
+                console.error("Error fetching likes:", error);
+            }
+        }
+        fetchLikes();
     }, []);
 
     function onLike(e) {
         e.preventDefault();
         if (liked) return;
-        axios
-            .post('/api/like')
-            .catch((err) => console.log(err));
-        setNumLikes(numLikes + 1);
-        setLiked(true);
-        localStorage.setItem('liked', true);
+        supabase
+            .rpc('sfburrito_like')
+            .then(({ _, error }) => {
+                if (error) console.error(error);
+                setNumLikes(numLikes + 1);
+                setLiked(true);
+                localStorage.setItem('liked', true);
+            })
+            .catch(error => {
+                console.error("An unexpected error occurred while liking:", error);
+            });
     }
 
     // https://stackoverflow.com/questions/9461621/format-a-number-as-2-5k-if-a-thousand-or-more-otherwise-900
